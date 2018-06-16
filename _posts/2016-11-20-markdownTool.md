@@ -2,7 +2,7 @@
 layout: post
 title: 友谊的小船
 date: 20190615
-tags: 工具    
+tags: 十三   
 ---
 
 
@@ -75,5 +75,4 @@ css 的大部分语法同样可以在 markdown 上使用，但不同的渲染器
 
 <br>
 
-转载请注明：[潘柏信的博客](http://baixin) » [Markdown工具集](http://baixin.io/2016/11/markdownTool/)                   
-
+转载请注明：[潘
