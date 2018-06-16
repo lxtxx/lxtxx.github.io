@@ -2,8 +2,8 @@
 layout: post
 title: TensorFlow 在 iOS 平台上的使用(一)
 date: 20180616
-tags:十一   
----
+tags:十三   
+--　人的-
 
 　　世界那么大，我想去看看
 
@@ -18,7 +18,7 @@ tags:十一
 * 
 ### 如果你
 
-　　人的
+　
 
 #### 编译静态库
 
