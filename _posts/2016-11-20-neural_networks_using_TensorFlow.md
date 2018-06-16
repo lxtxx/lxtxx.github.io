@@ -2,7 +2,7 @@
 layout: post
 title: 老司机带你吃吃喝喝
 date: 20180615
-tags: 机器学习  
+tags: 十一  
 ---
 
 ## 介绍
@@ -497,7 +497,7 @@ sample_submission.to_csv(os.path.join(sub_dir, 'sub01.csv'), index=False)
 * 尽管 TensorFlow 是强大的，它仍然是一个低水平库，例如，它可以被认为是机器级语言，但对于大多数功能，您需要自己去模块化和高级接口，如 keras
 * 它仍然在继续开发和维护，这是多么👍啊！
 * 它取决于你的硬件规格，配置越高越好
-* 不是所有变成语言能使用它的 API 。
+* 不是所有变成语言能使
 * TensorFlow 中仍然有很多库需要手动导入，比如 OpenCL 支持。
 
 上面提到的大多数是在 TensorFlow 开发人员的愿景，他们已经制定了一个路线图，计划库未来应该如何开发。
