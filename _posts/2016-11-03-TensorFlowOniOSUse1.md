@@ -2,7 +2,7 @@
 layout: post
 title: TensorFlow 在 iOS 平台上的使用(一)
 date: 20180616
-tags: 机器学习    
+tags:      
 ---
 
 　　世界那么大，我想去看看
