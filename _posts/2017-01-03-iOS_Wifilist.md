@@ -28,7 +28,7 @@ tag: 十一
 特别是它的离岛,包括大小PP岛、皇帝岛、007岛等等都很湛蓝,选择跳岛游非常不错。
 
 ```
-<img src="/images/posts/1.jpg" height="200" width="600"> 
+<img src="/images/posts/海岛之约/1.jpg" height="200" width="600"> 
 ### ★马尔代夫★
 
 懒人型海岛,适合家庭出游/蜜月/度假,淡季去划算
