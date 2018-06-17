@@ -1,7 +1,7 @@
 --- 
- layout: post 
- title: 海岛之约 
- date: 2018-06-15 
+ layout:post 
+ title:海岛之约 
+ date:2018-06-15 
  tag:十一 
  --- 
    说好的一起去旅行 
