@@ -20,7 +20,7 @@ tag: 十一
 
 ### 西北地区
 干啥恨不得发卡的时光
-  
+  <img src="/images/posts/Xcode8/image1.png" height="200" width="600"> 
  
  
 
