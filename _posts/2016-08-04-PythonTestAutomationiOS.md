@@ -1,135 +1,78 @@
----
-layout: post
-title: "Python自动化测试iOS项目"
-date: 2016-08-04 
-tags: python  
----
-
-作为一个开发人员，为了保证自己的代码的健壮，写单元测试是必不可少的环节，然而最痛快的是每天去手动跑一遍所有的case。那么什么能帮我们解决这些繁琐的操作呢，大家应该会想到自动化测试脚本了，是的，我们可以借助脚本来完成全自动化测试，下面是我列的每天脚本自动执行流程：       
-
- >* 1、`pull` git仓库里面的最新代码到本地。    
- >* 2、然后打包成`App`。   
- >* 3、安装到模拟器上。    
- >* 4、运行App，执行单元测试，生成测试数据并保存到本地。    
- >* 5、脚本读取测试数据，邮件发送给相关人员。    
-
-
-当这些全自动化后，可以大大减少开发人员的维护成本，即使每次项目里面有新增模块后，增加测试case就行了，下面会介绍自动测试这5步具体怎么去执行，整个脚本是使用Python写的，代码很少功能也很简单，但这已经可以帮我们完成基本的自动化测试了，这就是脚本的强大之处，选择Pyhton纯属个人喜好，最近也在学习Python，当然了最终使用什么语言看你自己。   
-
-### python执行shell命令完成测试       
-
-首先确认本机上安装了`git` 和 `python` 。    
-脚本判断本地是否存在项目，不存在则使用命令 `git clone ...` ，存在则使用命令 `git pull ...` 。       
-这些在Linux的命令都可以使用脚本来完成的，python的 `os.popen()` 方法 就是可以在Linux上执行shell命令。     
-**例如：**  把下面这段代码添加到一个 test.py 的文件里，然后在终端上执行 `python test.py` 命令你就会看到，你的当前目录下正在下载我的博客了。
-
-```     
-import os
-
-os.popen('git clone https://github.com/leopardpan/leopardpan.github.io.git')   
-
-```       
-git pull 。。。 更新代码也是一样的。
-
-接下来的打包、安装、运行都是使用python执行shell命令      
-
-**把iOS项目打包成App，下面的 `Demo` 是项目的名字**              
-
->* os.popen('xcodebuild -project Demo.xcodeproj -target Demo -configuration Debug -sdk iphonesimulator')	 
-
-这行脚本运行完成后，你就会发现同会生成一个 `build` 的文件夹。  
-Debug参数表示现在是Debug模式，如果Xcode里面改成Release了，这里需要改成Release。  
-xcodebuild 命令是 Xcode Command Line Tools 的一部分。通过调用这个命令，可以完成 iOS 工程的编译，打包和签名过程。可以使用 xcodebuild --help 来看看具体有哪些功能。 
-
-**打开iOS模拟器，这里运行的是`iPhone 6 Plus` 你也可以换成其它型号的模拟器**      
-
->*  os.popen('xcrun instruments -w "iPhone 6 Plus"')	
-
-**把刚才打包生成的App安装到模拟器上**      
-在安装之前要先卸载App,不然你运行的永远是最初安装的那个，后来安装的不会覆盖之前的，卸载App
-
->* os.popen('xcrun simctl uninstall booted com.test.Demo')
-
-booted 后面接的是 `Bundle Identifier`，我的是 com.test.Demo，然后再安装App     
-
->* os.popen('xcrun simctl install booted build/Debug-iphonesimulator/Demo.app ')	
-
-booted 后面接的是.app的路径，我打包的时候的是Debug，所以这个的文件夹名称是Debug-iphonesimulator。
-
-**在模拟器里运行App**      
-
->* os.popen('xcrun simctl launch booted com.test.Demo')
-
-booted 后面接的是 `Bundle Identifier`，我的是 com.test.Demo。
-
-到目前为止，你就会发现你的项目已经运行起来了，你可以在项目是Debug模式下一启动就执行单元测试，然后把对应的测试数据保存到本地为data.json。然后在使用python脚本读取测试文件的数据，最终使用邮件发送给相关人员，pyhton读取数据很简单，一行代码就行
-
->* data = open('data.json').read() 
-
-data里面就是json字符串，为了脚本操作简单，我在存储的时候直接把json格式的转成了字符串类型。
-
-### python发送邮件     
-
-我使用的是SMTP进行邮件发送的，SMTP是发送邮件的协议，Python内置对SMTP的支持，可以发送纯文本邮件、HTML邮件以及带附件的邮件。     
-
-Python对SMTP支持有smtplib和email两个模块，email负责构造邮件，smtplib负责发送邮件，具体代码如下： 
-
-
-	from email import encoders
-	from email.header import Header
-	from email.mime.text import MIMEText
-	from email.utils import parseaddr, formataddr
-	import smtplib
-
-	def format_addr(self,s):
-	    name, addr = parseaddr(s)
-	    return formataddr(( \
-	        Header(name, 'utf-8').encode(), \
-	        addr.encode('utf-8') if isinstance(addr, unicode) else addr))
-
-	def send_mail(self, mail, message, title):
-		from_addr = 'leopardpan@163.com'
-		password = ''
-		to_addr = mail
-		smtp_server = 'smtp.163.com'
-
-		msg = MIMEText(message, 'plain', 'utf-8')
-		msg['From'] = self.format_addr(u'自动化测试邮件 <%s>' % from_addr)
-		msg['To'] = self.format_addr(u'管理员 <%s>' % to_addr)
-		msg['Subject'] = Header(title, 'utf-8').encode()
-
-		server = smtplib.SMTP(smtp_server, 25)
-		server.set_debuglevel(1)
-		server.login(from_addr, password)
-		server.sendmail(from_addr, [to_addr], msg.as_string())
-		server.quit()
-
-	send_mail('leopardpan@icloud.com','正文','标题')
-
-
-from_addr是发送方的邮箱地址，password是开通SMTP时输入的密码     
-smtp_server是smtp的服务，如果你的from_addr是gamil.com，那么就要写成smtp_server = 'smtp.gmail.com' 了。
-
-方法 send_mail(self, mail, message, title): 有四个参数，第一个不用传，第二个参数是收信人的邮箱，第三个是邮件的正文，第四个是邮件的标题，方法调用格式： `send_mail('leopardpan@icloud.com','正文','标题')`
-
-注意：发送方的邮箱必须要开通SMTP功能才行，否则会报错
-
->* SMTPSenderRefused: (550, 'User has no permission', 'leopardpan@163.com')
-
-163的SMTP开通，需要你登录网易邮箱，然后点击顶部的设置就会出现`POP3/SMTP/IMAP`，点击之后，勾选选择开启，这个时候需要你输入密码，记住这个密码就是上面代码中的`password`，如果你都完成的话，你把上面的代码拷贝出现，把邮箱修改成你自己的，使用 pyhton 运行一下吧。
-
-
-上面的几个流程结合起来就可以实现一个简单的自动化测试了，如果你有什么建议和意见欢迎讨论。
-
-
-参考链接：
-[SMTP发送邮件](http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386832745198026a685614e7462fb57dbf733cc9f3ad000)     
-
-<br>
-
-转载请注明：[潘柏信的博客](http://baixin) » [点击阅读原文](http://baixin.io/2016/08/PythonTestAutomationiOS/) 
-
- 
-
-
-
+--- 
+ layout: post 
+ title: 海岛之约 
+ date: 2018-06-15 
+ tag: 十一 
+ --- 
+ 说好的一起去旅行 
+ 青春本来就是马不停蹄的相遇和错过，愿你能遇见那个人，那个能让你不用再咬着牙逞强憋着泪倔犟的人,只是后来我绕了很多圈，却再也没有遇见那个能亲我会脸红的人了。 
+ 故事的最后，我与世界只差了一个你。 
+ 不知道什么叫失恋，经历的时候自己就知道了； 
+ 不知道什么叫远方，到达的时候自己就知道了； 
+ 不知道什么叫真爱，当真爱来了就会出现晴天，望着眼前的这个人，想一直和她在一起。 
+ 时间滴答，消逝了很多。愿在未来，有个如我一般的人爱你。这辈子，相遇一场，只要各自安好，联系不联系都不重要。 
+ 所以这一路很感谢你能来，也不遗憾你离开。  
+ ### 泰国★普吉岛★ 
+ < img src="/images/posts/Xcode8/15.jpg" height="250" width="800">  
+ 普吉岛以其迷人的热带风光和丰富的旅游资源被称为“安达曼海上的一颗明珠”，而且自然资源十分丰富，有“珍宝岛”、“金银岛”的美称。主要矿产是锡，还盛产橡胶、海产和各种水果。岛上工商业、旅游业都较发达。这里遍布海滩和海湾，有以清净著称的卡马拉海滩，有私密性风格的苏林海滩，有经常举行海上运动的珊瑚岛，还有夜生活较丰富的芭东海滩等。岛上还有很多山，游客可以在岛上乘坐出租车和摩托探险，也可以潜水和乘坐游艇出海。 
+   ``` 
+ 旺季：11月-次年4月 
+ ``` 
+ 停留时间：4-5天 
+ ``` 
+   景色:本岛的景色中规中矩,几个离岛,包括皮皮岛、皇帝岛的景色还是不错的。 
+ ``` 
+ 消费:机票便宜,物价不高。 
+ ``` 
+ 普吉岛特点:普吉开发得很早,也很成熟,水上运动和夜生活都很丰富,泰国特色也有保留。 
+ 特别是它的离岛,包括大小PP岛、皇帝岛、007岛等等都很湛蓝,选择跳岛游非常不错。 
+   ``` 
+     ### ★马尔代夫★ 
+ < img src="/images/posts/Xcode8/2.jpg" height="250" width="800">  
+ 懒人型海岛,适合家庭出游/蜜月/度假,淡季去划算 
+ ``` 
+ 旺季:12月-3月 
+ ``` 
+ 停留时间:5天 
+ ``` 
+ 景色:马尔代夫岛屿众多,大都海水湛蓝,热带鱼群游,属于一岛一酒店型。 
+ ``` 
+ 消费:旺季去费用较高。淡季房费会划算很多。 
+ ``` 
+ 马尔代夫特点:马尔代夫是海岛度假的典型代表,非常适合放空心情,一岛一酒店的形式让岛屿非常清净,具有代表性的梦幻水屋是蜜月首选,非常值得体验。 
+ ``` 
+ ### 印尼★巴厘岛★ 
+ < img src="/images/posts/Xcode8/5.jpg" height="250" width="800">  
+ 岛大景点多,适合各类人群,灵活多变安排各种行程 
+ ``` 
+ 旺季:4月-9月 
+ ``` 
+ 停留时间:4天 
+ ``` 
+ 景色:海景以离岛蓝梦岛、Lovina、图兰奔的海景最为有名,还有乌布的山谷和文化。 
+ ``` 
+ 消费:机票、酒店稍贵,其他消费不高。 
+ ``` 
+ 巴厘岛特点:巴厘岛比较大,相当于国内一个省的大小,开发的也很成熟,各种景点和水上项目也多,能适应各种玩法,还是有名的“婚礼之都”、“蜜月之岛”。其实亲子游、老人休闲游、独自游都很合适。 
+ ``` 
+ ### 美国★塞班岛★ 
+ < img src="/images/posts/Xcode8/3.jpg" height="250" width="800">  
+ 凤凰花很美,海景漂亮,世界顶级潜水地,免税店折扣也很大 
+ ``` 
+ 旺季:11月-7月 
+ ``` 
+ 停留时间:6天 
+ ``` 
+ 景色:海景迷人,水上项目多,凤凰花开的季节非常美,此外还有许多历史遗迹。 
+ ``` 
+ 消费:相对较高。 
+ ``` 
+ 塞班岛特点:塞班岛近几年才被开发,极少被污染,海水有7种颜色,5-7月岛上开满火红热烈的凤凰花。这里还拥有“世界第二”潜水胜地—蓝洞,因为属于美国海岛,岛上DFS环球免税店的各大名品,均比香港更便宜。且许多美国产的奢侈品/化妆品,更是非常划算。 
+ ``` 
+ ### ★枸杞岛★ 
+ < img src="/images/posts/Xcode8/4.jpg" height="250" width="800">  
+ 枸杞岛被称为东方的“小希腊”。位于嵊泗列岛东部，是列岛中仅次于泗礁的第二大岛。这个海岛离舟山和上海都比较近，岛东端有枸杞沙滩，且有小西天、山海奇观碑、虎石、蛟龙出水、岛沙碑等胜景。 
+ ``` 
+ 时间:全天开放 
+ `` 
+ 景色与历史：枸杞岛其实在晋朝就有人居住了，岛名也是变了好几次的，现名叫“
