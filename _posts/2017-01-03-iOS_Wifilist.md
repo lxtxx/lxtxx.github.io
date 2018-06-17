@@ -29,7 +29,7 @@ tag: 十一
 
 ```
 
-<img src="/images/posts/Xcode8/image15.jpg" height="200" width="600"> 
+<img src="/images/posts/Xcode8/15.jpg" height="200" width="600"> 
 ### ★马尔代夫★
 
 懒人型海岛,适合家庭出游/蜜月/度假,淡季去划算
