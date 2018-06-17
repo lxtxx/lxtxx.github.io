@@ -494,7 +494,7 @@ sample_submission.to_csv(os.path.join(sub_dir, 'sub01.csv'), index=False)
 
 ### <a name="Limitations-of-TensorFlow"></a>TensorFlow 的限制
 
-* 尽管 TensorFlow 是强大的，它仍然是一个低水平库，例如，它可以被认为是机器级语言，但对于大多数功能，您需要自己去模块化和高级接口，如 keras
+* 尽管 TensorFlow 是强大的，它仍然是一个低水平库，例如，它可以被认为是机器级语言，但对于大多数功能需要自己去模块化和高级接口，如 keras
 * 它仍然在继续开发和维护，这是多么👍啊！
 * 它取决于你的硬件规格，配置越高越好
 * 不是所有变成语言能使
