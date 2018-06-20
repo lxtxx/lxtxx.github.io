@@ -13,6 +13,16 @@ tag: 博客
  </body> 
  </html>
  <embed src="http://http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0"" width="170" height="25" type="audio/mpeg" autostart="true" loop="infinite"></embed>
+ <object classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6" 
+type="application/x-oleobject" width="180" height="60">
+   <PARAM NAME="URL" VALUE="http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0">
+   <PARAM NAME="AutoStart" VALUE="False">
+   <PARAM name="Volume" value="50">
+   <PARAM name="loop" value="False">
+   <PARAM NAME="Mute" VALUE="False">
+   <PARAM NAME="fullScreen" VALUE="False">
+   <PARAM name="uiMode" value="full">
+</object>
 HEXO接近是最近有一些朋友提出的问题，然后我做了总结，如果你也在使用HEXO，不妨看看，应该会有些帮助。
 
 * 1、博客部署样式出问题了怎么办？
