@@ -3,6 +3,7 @@ layout: post
 title: HEXO进阶
 tag: 博客
 ---
+<embed src="http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0" width="170" height="25" type="audio/mpeg" autostart="true" loop="infinite"></embed>
 <html> 
  <head> 
  <title>背景音乐</title> 
