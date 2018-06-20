@@ -5,7 +5,7 @@ tag: 博客
 ---
 <html> 
  <head> 
-
+ <title>背景音乐</title> 
  </head> 
  <body> 
  <embed src="http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0" autostart="true" loop="-1"controls="ControlPanel" width="0" height="0" > 
