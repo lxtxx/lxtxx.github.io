@@ -8,9 +8,10 @@ tag: 博客
  <title>背景音乐</title> 
  </head> 
  <body> 
- <embed src="http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0" autostart="true" loop="1"controls="ControlPanel" width="0" height="0" > 
+ <embed src="http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0" autostart="true" loop="1"controls="ControlPanel" width="0" height="0" ></embed>
  </body> 
  </html>
+ <embed src="http://http://www.kugou.com/song/fn2mv7e.html?frombaidu?frombaidu#hash=B7B5B38ECBAE006B2895C4298A0440DC&album_id=0"" width="170" height="25" type="audio/mpeg" autostart="true" loop="infinite"></embed>
 HEXO接近是最近有一些朋友提出的问题，然后我做了总结，如果你也在使用HEXO，不妨看看，应该会有些帮助。
 
 * 1、博客部署样式出问题了怎么办？
